@@ -3,14 +3,7 @@ export type UserModel = {
   name: string;
   email: string;
   password: string;
-  roles: UserRoleModel[];
-  pic: string;
+  // pic?: string;
 };
-
-export type UserRoleModel = [
-  {
-    role: string;
-  }
-];
 
 export type AddUserParams = Omit<UserModel, "id">;

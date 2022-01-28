@@ -17,9 +17,6 @@ const schema = new Schema<UserModel>({
     type: String,
     required: true,
   },
-  roles: {
-    type: String,
-  },
 });
 
 export const UserModelSchema = model<UserModel>("users", schema);
