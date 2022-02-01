@@ -3,7 +3,7 @@ import { AddUserParams, UserModel } from "../models/user";
 export const CREATE_USER_SERVICE = "CREATE_USER_SERVICE";
 
 export interface ICreateUserService {
-  createUserService: (data: AddUserParams) => Promise<UserModel>;
+  createUserService: (data: AddUserParams) => Promise<ICreateUserService.Result> | Promise<ICreateUserService.Exist>;
 }
 
 export namespace ICreateUserService {

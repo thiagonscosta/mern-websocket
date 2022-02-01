@@ -4,7 +4,6 @@ import {
   CREATE_USER_SERVICE,
   ICreateUserService,
 } from "@/domain/use-cases/create-user-service";
-import { CreateUserServiceImpl } from "@/domain/use-cases/impl/create-user-service-impl";
 import { Mapping, Get, Adapter, Post, Body } from "@tsclean/core";
 
 @Mapping("api/v1/create-user")
@@ -14,9 +13,15 @@ export class CreateUserController {
     private readonly createUserService: ICreateUserService
   ) {}
 
-  // Example function
   @Post()
   async createUser(@Body() data: AddUserParams): Promise<any> {
-    return await this.createUserService.createUserService(data);
+    const account = await this.createUserService.createUserService(data);
+    if (account === true) {
+      return {
+        statusCode: 400,
+        body: {"message": "Email is already in use"}
+      }
+    }
+    return account;
   }
 }
