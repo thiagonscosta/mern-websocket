@@ -7,6 +7,8 @@ export interface ICheckEmailRepository {
 export namespace ICheckEmailRepository {
   export type Result = {
     id: string | number;
+    name: string;
+    email: string;
     password: string;
   };
 }

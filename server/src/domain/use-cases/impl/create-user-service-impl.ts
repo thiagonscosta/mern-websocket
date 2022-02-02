@@ -28,6 +28,7 @@ export class CreateUserServiceImpl implements ICreateUserService {
     data: AddUserParams
   ): Promise<ICreateUserService.Exist | ICreateUserService.Result> {
     const userExists = await this.checkEmailRepository.checkEmail(data.email);
+
     if (userExists) {
       return true;
     }

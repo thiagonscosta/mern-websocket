@@ -7,8 +7,8 @@ export class UserMongooseRepositoryAdapter
   implements ICreateUserRepository, ICheckEmailRepository
 {
   map(data: any): any {
-    const { _id, name, email } = data;
-    return Object.assign({}, { id: _id.toString(), name, email });
+    const { _id, name, email, password } = data;
+    return Object.assign({}, { id: _id.toString(), name, email, password });
   }
 
   async checkEmail(email: string): Promise<ICheckEmailRepository.Result> {

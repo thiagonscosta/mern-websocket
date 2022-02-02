@@ -11,6 +11,7 @@ export class BcryptAdapter implements IHashRepository, IHashCompare {
     return await bcrypt.hash(text, this.salt);
   }
   async compare(text: string, verify: string): Promise<boolean> {
+    console.log(text, verify);
     return await bcrypt.compare(text, verify);
   }
 }
