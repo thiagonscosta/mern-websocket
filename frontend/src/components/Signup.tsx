@@ -10,6 +10,10 @@ const Signup: React.FC = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [pic, setPic] = useState('');
 
+    const postDetails = (pics: any) => {};
+
+    const submitHandler = () => {};
+
     const handleClick = () => setShowPassword(!showPassword);
 
     return <VStack spacing="5px">
@@ -48,6 +52,16 @@ const Signup: React.FC = () => {
                 placeholder='Enter Your Email'
                 onChange={(e) => setConfirmPassword(e.target.value)}
             />
+        </FormControl>
+        <FormControl id="pic">
+            <FormLabel>Upload your Picture</FormLabel>
+            <Input
+                type="file"
+                p={1.5}
+                accept="image/*"
+                onChange={(e) => postDetails(e.target)}
+            >
+            </Input>
         </FormControl>
     </VStack>
 }

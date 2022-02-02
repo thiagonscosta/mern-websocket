@@ -26,10 +26,10 @@ const HomePage: React.FC = () => {
 
                 <TabPanels>
                     <TabPanel>
-                        <Signup />
+                        <Login />
                     </TabPanel>
                     <TabPanel>
-                        <Login />
+                        <Signup />
                     </TabPanel>
                 </TabPanels>
                 </Tabs>
