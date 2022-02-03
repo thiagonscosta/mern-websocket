@@ -14,6 +14,7 @@ export class CreateUserServiceImpl implements ICreateUserService {
   ) {}
   async createUserService(data: AddUserParams): Promise<UserModel> {
     const userExists = await this.checkEmailRepository.checkEmail(data.email);
+
     if (userExists) {
       return userExists;
     }

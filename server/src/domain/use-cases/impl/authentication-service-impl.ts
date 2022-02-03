@@ -25,7 +25,7 @@ export class AuthenticationServiceImpl implements IAuthenticationService {
   ) {}
   async auth(
     data: IAuthenticationService.Params
-  ): Promise<IAuthenticationService.Result> {
+  ): Promise<IAuthenticationService.Result | any> {
     const hasAccount = await this.checkEmail.checkEmail(data.email);
     const isValid = await this.hashCompare.compare(
       data.password,
@@ -33,6 +33,13 @@ export class AuthenticationServiceImpl implements IAuthenticationService {
     );
     if (isValid) {
       const accessToken = await this.encrypt.encrypt(hasAccount.id);
+      return {
+        accessToken,
+        id: hasAccount.id,
+        name: hasAccount.name,
+        email: hasAccount.email
+      }
     }
+    return null;
   }
 }

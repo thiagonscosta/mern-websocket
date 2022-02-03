@@ -5,6 +5,7 @@ import {
   ICreateUserService,
 } from "@/domain/use-cases/create-user-service";
 import { Mapping, Get, Adapter, Post, Body } from "@tsclean/core";
+import { ValidateFields } from "../helpers/validate-fields";
 
 @Mapping("api/v1/create-user")
 export class CreateUserController {
@@ -14,14 +15,21 @@ export class CreateUserController {
   ) {}
 
   @Post()
-  async createUser(@Body() data: AddUserParams): Promise<any> {
-    const account = await this.createUserService.createUserService(data);
-    if (account === true) {
+  async createUser(
+    @Body() data: AddUserParams
+  ): Promise<ICreateUserService.Result | any> {
+    const { errors, isValid } = ValidateFields.fieldsValidation(data);
+    if (!isValid) return { statusCode: 422, body: { message: errors } };
+    const hasAccount = await this.createUserService.createUserService(data);
+
+    if (hasAccount === true) {
       return {
         statusCode: 400,
-        body: {"message": "Email is already in use"}
-      }
+        body: {
+          message: "E-mail already in use",
+        },
+      };
     }
-    return account;
+    return hasAccount;
   }
 }
