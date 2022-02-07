@@ -1,6 +1,7 @@
 import { Button, FormControl, FormLabel, Input, InputRightElement, VStack, useToast } from '@chakra-ui/react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Signup: React.FC = () => {
 
@@ -12,8 +13,9 @@ const Signup: React.FC = () => {
     const [pic, setPic] = useState('');
     const [loading, setLoading] = useState(false);
     const toast = useToast();
+    const navigate = useNavigate();
 
-    const postDetails = (pics: any) => {
+    const postDetails = async (pics: any) => {
         setLoading(true);
         if (pic === undefined) {
             toast({
@@ -46,9 +48,51 @@ const Signup: React.FC = () => {
             });
             return;
         }
+
+        try {
+            const config = {
+                headers: {
+                    "Content-type": "application/json",
+                },
+            };
+            const { data } = await axios.post("/api/users", { name, email, password, pic }, config);
+            toast({
+                title: "Registration Successful",
+                status: "success",
+                duration: 5000,
+                isClosable: true,
+                position: "bottom"
+            });
+            localStorage.setItem("userInfo", JSON.stringify(data));
+            setLoading(false);
+            navigate("/chats");
+        } catch (error) {
+            const err = error as AxiosError;
+            toast({
+                title: "Error Occured!",
+                description: err.message,
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: "bottom",
+            });
+        }
     };
 
-    const submitHandler = () => {};
+    const submitHandler = async () => {
+        setLoading(true);
+        if (!email || !password) {
+            toast({
+                title: "Please Fill all the Fields",
+                status: "warning",
+                duration: 5000,
+                isClosable: true,
+                position: "bottom"
+            });
+            setLoading(false);
+            return;
+        }
+    };
 
     const handleClick = () => setShowPassword(!showPassword);
 
