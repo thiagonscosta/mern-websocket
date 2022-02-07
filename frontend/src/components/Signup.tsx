@@ -1,4 +1,5 @@
-import { Button, FormControl, FormLabel, Input, InputRightElement, VStack } from '@chakra-ui/react';
+import { Button, FormControl, FormLabel, Input, InputRightElement, VStack, useToast } from '@chakra-ui/react';
+import axios from 'axios';
 import React, { useState } from 'react';
 
 const Signup: React.FC = () => {
@@ -9,8 +10,43 @@ const Signup: React.FC = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [pic, setPic] = useState('');
+    const [loading, setLoading] = useState(false);
+    const toast = useToast();
 
-    const postDetails = (pics: any) => {};
+    const postDetails = (pics: any) => {
+        setLoading(true);
+        if (pic === undefined) {
+            toast({
+                title: "Please Select an Image!",
+                status: "warning",
+                duration: 5000,
+                isClosable: true,
+                position: "bottom"
+            });
+            return;
+        }
+        if (pics.type === "image/jpeg" || pics.type === "image/png") {
+            const data = new FormData();
+            data.append("file", pics);
+            data.append("upload_preset", "chat_app");
+            data.append("cloud_name", "daoswi9iv");
+            axios.post(`${process.env.CLOUDINARY_URL}`, { data })
+                .then((res) => res.data)
+                .then((data) => { 
+                    setPic(data.url.toString()); 
+                    setLoading(false); 
+                }).catch((err) => { console.log(err); setLoading(false); })
+        } else {
+            toast({
+                title: "Please Select an Image!",
+                status: "warning",
+                duration: 5000,
+                isClosable: true,
+                position: "bottom"
+            });
+            return;
+        }
+    };
 
     const submitHandler = () => {};
 
@@ -63,6 +99,16 @@ const Signup: React.FC = () => {
             >
             </Input>
         </FormControl>
+        <Button
+            colorScheme="blue"
+            width="100%"
+            color="white"
+            style={{ marginTop: 15 }}
+            onClick={submitHandler}
+            isLoading={loading}
+        >
+            Sign Up
+        </Button>
     </VStack>
 }
 
