@@ -16,8 +16,7 @@ app.get('/', (req, res) => {
     res.send("API Is Running")
 })
 
-app.use("/api/user", routes);
-
+app.use(routes);
 app.use(notFound);
 app.use(errorHandler);
 

@@ -1,7 +1,12 @@
-import { model, Mongoose, Schema } from "mongoose";
+import mongoose, { Model, model, Mongoose, Schema, Document } from "mongoose";
+import { IUser } from './interfaces/user.interface';
 import bcrypt from "bcrypt";
 
-const userSchema = new Schema<User>(
+interface IUserModel extends IUser, Document {
+  matchPassword: (password: string) => Promise<boolean>;
+}
+
+const userSchema: Schema = new Schema(
   {
     name: {
       type: String,
@@ -44,4 +49,5 @@ userSchema.methods.matchPassword = async function (password: string) {
   return await bcrypt.compare(password, this.password);
 };
 
-export default model<User>("User", userSchema);
+export default model<IUserModel>("User", userSchema);
+

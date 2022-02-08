@@ -5,4 +5,7 @@ const routes = Router();
 
 const userController = new UserController();
 
+routes.post("/api/user", routes);
+
+
 export { routes };
