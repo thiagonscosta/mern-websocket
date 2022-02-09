@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import generateToken from "../helpers/jwt";
-import { User } from "../models/user";
+import User from "../models/user";
 
 export class UserController {
   async register(req: Request, res: Response): Promise<Response> {
