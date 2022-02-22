@@ -26,15 +26,27 @@ export class UserController {
     }
   }
 
-  async login(req: Request, res: Response): Promise<Response> {
-    const { email, password } = req.body;
+  // async login(req: Request, res: Response): Promise<Response> {
+  //   const { email, password } = req.body;
 
-    const user = await User.findOne({ email }).select("+password").exec();
+  //   const user = await User.findOne({ email }).select("+password").exec();
 
-    if (user && (await User.matchPassword(password))) {
-      res.json({
-        user,
-      });
-    }
+  //   if (user && (await User.matchPassword(password))) {
+  //     res.json({
+  //       user,
+  //     });
+  //   }
+  // }
+  async allUsers(req: Request, res: Response) {
+    const keyword = req.query.search
+      ? {
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ]
+      }
+    : {};
+    const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
+    res.send(users);
   }
 }
